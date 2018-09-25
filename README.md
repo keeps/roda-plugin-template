@@ -19,7 +19,7 @@ If you require a different RODA version, e.g. v2.2.10, update the pom.xml parent
 The build script will compile the plugin and create a docker image with the base roda plus the plugin installed.
 To run execute (roda-plugin-template should be replaced by the project folder name):
 
-```
+```shell
 docker run -p 8080:8080 roda-plugin-template:latest
 ```
 
@@ -29,7 +29,7 @@ Then open in your favorite browser [http://localhost:8080](http://localhost:8080
 
 A new README.md file can be generated using the plugin description and parameters.
 
-```
+```shell
 mvn compile exec:java -Droda.node.type=CONFIGS -Dmaven.test.skip -Denforcer.skip
 cp target/README.md .
 ```
@@ -38,7 +38,7 @@ Here are the requirements to enable README.md generation:
 
 * Depend on roda-core version >= `2.2.0-beta1-SNAPSHOT` (make sure it does not have the scope defined as `provided`)
 * Add plugin to exec a class with `RODA_PLUGIN` & maven target directory as parameters. E.g.:
-```
+```xml
 <plugin>
    <groupId>org.codehaus.mojo</groupId>
    <artifactId>exec-maven-plugin</artifactId>
