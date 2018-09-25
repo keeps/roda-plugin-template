@@ -1,0 +1,21 @@
+language: java
+jdk:
+- oraclejdk8
+
+env:
+ global:
+ - MAVEN_OPTS="-Xms1024m -Xmx4g -Dmaven.repo.local=$HOME/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+ - MAVEN_CLI_OPTS="--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
+before_cache:
+    - sudo chown -R travis:travis $HOME/.m2/
+
+cache:
+  directories:
+    - $HOME/.m2/
+
+before_script:
+  - ./install_dependencies.sh
+
+script:
+  - mvn $MAVEN_CLI_OPTS -Denforcer.skip=true clean package test
