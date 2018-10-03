@@ -52,7 +52,9 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <descriptor>assembly.xml</descriptor>
+              <descriptors>
+                <descriptor>assembly.xml</descriptor>
+              </descriptors>
             </configuration>
           </execution>
         </executions>
