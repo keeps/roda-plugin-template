@@ -18,6 +18,8 @@ buildNumber.properties
 .idea/
 *.iml
 test-output/
+**/.vscode/
+**/.factorypath
 
 # OSes
 **/.DS_Store

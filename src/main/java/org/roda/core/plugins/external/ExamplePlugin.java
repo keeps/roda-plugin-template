@@ -8,7 +8,6 @@
 package org.roda.core.plugins.external;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +21,6 @@ import org.roda.core.data.exceptions.GenericException;
 import org.roda.core.data.exceptions.NotFoundException;
 import org.roda.core.data.exceptions.RODAException;
 import org.roda.core.data.exceptions.RequestNotValidException;
-import org.roda.core.data.v2.IsRODAObject;
 import org.roda.core.data.v2.LiteOptionalWithCause;
 import org.roda.core.data.v2.common.OptionalWithCause;
 import org.roda.core.data.v2.ip.AIP;
@@ -40,7 +38,7 @@ import org.roda.core.plugins.AbstractPlugin;
 import org.roda.core.plugins.Plugin;
 import org.roda.core.plugins.PluginException;
 import org.roda.core.plugins.RODAObjectProcessingLogic;
-import org.roda.core.plugins.orchestrate.SimpleJobPluginInfo;
+import org.roda.core.plugins.orchestrate.JobPluginInfo;
 import org.roda.core.plugins.plugins.PluginHelper;
 import org.roda.core.storage.StorageService;
 import org.slf4j.Logger;
@@ -92,14 +90,14 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
     return PluginHelper.processObjects(this, new RODAObjectProcessingLogic<AIP>() {
       @Override
       public void process(IndexService index, ModelService model, StorageService storage, Report report, Job cachedJob,
-        SimpleJobPluginInfo jobPluginInfo, Plugin<AIP> plugin, AIP object) {
+        JobPluginInfo jobPluginInfo, Plugin<AIP> plugin, AIP object) {
         processAIP(model, index, storage, report, jobPluginInfo, cachedJob, (AIP) object);
       }
     }, index, model, storage, liteList);
   }
 
   protected void processAIP(ModelService model, IndexService index, StorageService storage, Report report,
-    SimpleJobPluginInfo jobPluginInfo, Job job, AIP aip) {
+    JobPluginInfo jobPluginInfo, Job job, AIP aip) {
     Report reportItem = PluginHelper.initPluginReportItem(this, aip.getId(), AIP.class, AIPState.INGEST_PROCESSING);
     PluginHelper.updatePartialJobReport(this, model, reportItem, false, job);
     PluginState reportState = PluginState.SUCCESS;

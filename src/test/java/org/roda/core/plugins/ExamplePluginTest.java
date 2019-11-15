@@ -100,7 +100,8 @@ public class ExamplePluginTest {
   }
 
   public List<TransferredResource> createCorpora() throws InterruptedException, IOException, FileAlreadyExistsException,
-    NotFoundException, GenericException, AlreadyExistsException, SolrServerException, IsStillUpdatingException {
+    NotFoundException, GenericException, AlreadyExistsException, SolrServerException, IsStillUpdatingException,
+      AuthorizationDeniedException {
     TransferredResourcesScanner f = RodaCoreFactory.getTransferredResourcesScanner();
 
     List<TransferredResource> resources = new ArrayList<TransferredResource>();
