@@ -71,7 +71,8 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
 
   @Override
   public String getName() {
-    return "Example plugin";
+    // Get from pom.xml <name>
+    return getClass().getPackage().getImplementationTitle();
   }
 
   @Override
@@ -81,7 +82,8 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
 
   @Override
   public String getVersionImpl() {
-    return "1.0";
+    // Get from pom.xml <version>
+    return getClass().getPackage().getImplementationVersion();
   }
 
   @Override
