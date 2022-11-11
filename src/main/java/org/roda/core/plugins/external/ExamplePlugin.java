@@ -8,7 +8,7 @@
 package org.roda.core.plugins.external;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +29,9 @@ import org.roda.core.data.v2.ip.File;
 import org.roda.core.data.v2.ip.Representation;
 import org.roda.core.data.v2.jobs.Job;
 import org.roda.core.data.v2.jobs.PluginParameter;
+import org.roda.core.data.v2.jobs.PluginState;
 import org.roda.core.data.v2.jobs.PluginType;
 import org.roda.core.data.v2.jobs.Report;
-import org.roda.core.data.v2.jobs.Report.PluginState;
 import org.roda.core.index.IndexService;
 import org.roda.core.model.ModelService;
 import org.roda.core.plugins.AbstractPlugin;
@@ -49,6 +49,7 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
   private static final Logger LOGGER = LoggerFactory.getLogger(ExamplePlugin.class);
 
   private static Map<String, PluginParameter> pluginParameters = new HashMap<>();
+
   static {
     // ADD PARAMETERS
   }
@@ -87,13 +88,10 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
   @Override
   public Report execute(IndexService index, ModelService model, StorageService storage,
     List<LiteOptionalWithCause> liteList) throws PluginException {
-    return PluginHelper.processObjects(this, new RODAObjectProcessingLogic<AIP>() {
-      @Override
-      public void process(IndexService index, ModelService model, StorageService storage, Report report, Job cachedJob,
-        JobPluginInfo jobPluginInfo, Plugin<AIP> plugin, AIP object) {
-        processAIP(model, index, storage, report, jobPluginInfo, cachedJob, (AIP) object);
-      }
-    }, index, model, storage, liteList);
+    return PluginHelper.processObjects(this,
+      (RODAObjectProcessingLogic<AIP>) (index1, model1, storage1, report, cachedJob, jobPluginInfo, plugin,
+        object) -> processAIP(model1, index1, storage1, report, jobPluginInfo, cachedJob, (AIP) object),
+      index, model, storage, liteList);
   }
 
   protected void processAIP(ModelService model, IndexService index, StorageService storage, Report report,
@@ -110,9 +108,7 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
       jobPluginInfo.incrementObjectsProcessed(reportState);
       reportItem.setPluginState(reportState);
 
-      if (!reportState.equals(PluginState.FAILURE)) {
-        reportItem.setHtmlPluginDetails(true).setPluginDetails("Details");
-      }
+      reportItem.setHtmlPluginDetails(true).setPluginDetails("Details");
 
     } catch (RODAException | RuntimeException e) {
       LOGGER.error("Error processing AIP " + aip.getId() + ": " + e.getMessage(), e);
@@ -197,12 +193,11 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
 
   @Override
   public List<String> getCategories() {
-    return Arrays.asList(RodaConstants.PLUGIN_CATEGORY_EXPERIMENTAL);
+    return Collections.singletonList(RodaConstants.PLUGIN_CATEGORY_EXPERIMENTAL);
   }
 
   @Override
   public List<Class<AIP>> getObjectClasses() {
-    return Arrays.asList(AIP.class);
+    return Collections.singletonList(AIP.class);
   }
-
 }

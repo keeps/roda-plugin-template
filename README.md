@@ -14,7 +14,7 @@ It includes:
 ## How to build and run
 
 To build execute `./build.sh`, this will run with the latest RODA version.
-If you require a different RODA version, e.g. v2.2.10, update the pom.xml parent version and execute `./build.sh v2.2.10`
+If you require a different RODA version, e.g. vX.X.X, update the pom.xml parent version and execute `./build.sh vX.X.X`
 
 The build script will compile the plugin and create a docker image with the base roda plus the plugin installed.
 To run execute (roda-plugin-template should be replaced by the project folder name):
@@ -42,11 +42,13 @@ Here are the requirements to enable README.md generation:
 <plugin>
    <groupId>org.codehaus.mojo</groupId>
    <artifactId>exec-maven-plugin</artifactId>
+   <version>3.0.0</version>
    <configuration>
       <mainClass>org.roda.core.RodaCoreFactory</mainClass>
       <arguments>
          <argument>generatePluginsMarkdown</argument>
          <argument>${RODA_PLUGIN}</argument>
+          <argument>[Production-ready]</argument> <!-- LIFE CYCLE STATUS -->
          <argument>${project.build.directory}</argument>
       </arguments>
    </configuration>
