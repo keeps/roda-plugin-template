@@ -36,7 +36,7 @@ cp target/README.md .
 
 Here are the requirements to enable README.md generation:
 
-* Depend on roda-core version >= `2.2.0-beta1-SNAPSHOT` (make sure it does not have the scope defined as `provided`)
+* Depend on roda-core version >= `5.0.0` (make sure it does not have the scope defined as `provided`)
 * Add plugin to exec a class with `RODA_PLUGIN` & maven target directory as parameters. E.g.:
 ```xml
 <plugin>
@@ -48,7 +48,8 @@ Here are the requirements to enable README.md generation:
       <arguments>
          <argument>generatePluginsMarkdown</argument>
          <argument>${RODA_PLUGIN}</argument>
-          <argument>[Production-ready]</argument> <!-- LIFE CYCLE STATUS -->
+         <argument>[Production-ready]</argument> <!-- LIFE CYCLE STATUS -->
+         <argument>${project.parent.version}</argument>
          <argument>${project.build.directory}</argument>
       </arguments>
    </configuration>
