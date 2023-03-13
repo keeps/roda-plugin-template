@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.date>${maven.build.timestamp}</build.date>
         <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
-        <java_version>1.8</java_version>
+        <java_version>17</java_version>
         <RODA_PLUGIN>org.roda.core.plugins.external.ExamplePlugin</RODA_PLUGIN>
     </properties>
     <parent>
