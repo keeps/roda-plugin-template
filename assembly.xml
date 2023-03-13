@@ -40,6 +40,8 @@
     <fileSet>
       <outputDirectory>/</outputDirectory>
       <includes>
+        <include>LICENSE.md</include>
+        <include>documentation/*</include>
         <include>install_dependencies.sh</include>
       </includes>
     </fileSet>
