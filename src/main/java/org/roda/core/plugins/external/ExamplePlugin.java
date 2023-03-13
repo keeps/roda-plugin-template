@@ -2,7 +2,7 @@
  * The contents of this file are subject to the license and copyright
  * detailed in the LICENSE.md file at the root of the source
  * tree and available online at
- *
+ * <p>
  * https://github.com/keeps/roda
  */
 package org.roda.core.plugins.external;
@@ -39,7 +39,7 @@ import org.roda.core.plugins.Plugin;
 import org.roda.core.plugins.PluginException;
 import org.roda.core.plugins.RODAObjectProcessingLogic;
 import org.roda.core.plugins.orchestrate.JobPluginInfo;
-import org.roda.core.plugins.plugins.PluginHelper;
+import org.roda.core.plugins.PluginHelper;
 import org.roda.core.storage.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +90,7 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
     List<LiteOptionalWithCause> liteList) throws PluginException {
     return PluginHelper.processObjects(this,
       (RODAObjectProcessingLogic<AIP>) (index1, model1, storage1, report, cachedJob, jobPluginInfo, plugin,
-        object) -> processAIP(model1, index1, storage1, report, jobPluginInfo, cachedJob, (AIP) object),
+        object) -> processAIP(model1, index1, storage1, report, jobPluginInfo, cachedJob, object),
       index, model, storage, liteList);
   }
 
@@ -179,14 +179,13 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
   }
 
   @Override
-  public Report beforeAllExecute(IndexService index, ModelService model, StorageService storage)
-    throws PluginException {
+  public Report beforeAllExecute(IndexService index, ModelService model, StorageService storage) {
     // do nothing
     return null;
   }
 
   @Override
-  public Report afterAllExecute(IndexService index, ModelService model, StorageService storage) throws PluginException {
+  public Report afterAllExecute(IndexService index, ModelService model, StorageService storage) {
     // do nothing
     return null;
   }

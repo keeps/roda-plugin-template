@@ -2,17 +2,14 @@
  * The contents of this file are subject to the license and copyright
  * detailed in the LICENSE.md file at the root of the source
  * tree and available online at
- *
+ * <p>
  * https://github.com/keeps/roda
  */
 package org.roda.core.plugins;
 
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +17,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.solr.client.solrj.SolrServerException;
 import org.roda.core.CorporaConstants;
 import org.roda.core.RodaCoreFactory;
 import org.roda.core.TestsHelper;
@@ -29,7 +25,6 @@ import org.roda.core.data.common.RodaConstants;
 import org.roda.core.data.exceptions.AlreadyExistsException;
 import org.roda.core.data.exceptions.AuthorizationDeniedException;
 import org.roda.core.data.exceptions.GenericException;
-import org.roda.core.data.exceptions.InvalidParameterException;
 import org.roda.core.data.exceptions.IsStillUpdatingException;
 import org.roda.core.data.exceptions.NotFoundException;
 import org.roda.core.data.exceptions.RODAException;
@@ -48,8 +43,8 @@ import org.roda.core.data.v2.jobs.Job;
 import org.roda.core.data.v2.jobs.PluginType;
 import org.roda.core.index.IndexService;
 import org.roda.core.model.ModelService;
+import org.roda.core.plugins.base.ingest.TransferredResourceToAIPPlugin;
 import org.roda.core.plugins.external.ExamplePlugin;
-import org.roda.core.plugins.plugins.ingest.TransferredResourceToAIPPlugin;
 import org.roda.core.storage.fs.FSUtils;
 import org.roda.core.util.IdUtils;
 import org.slf4j.Logger;
@@ -99,12 +94,11 @@ public class ExamplePluginTest {
     FSUtils.deletePathQuietly(basePath);
   }
 
-  public List<TransferredResource> createCorpora() throws InterruptedException, IOException, FileAlreadyExistsException,
-    NotFoundException, GenericException, AlreadyExistsException, SolrServerException, IsStillUpdatingException,
-      AuthorizationDeniedException {
+  public List<TransferredResource> createCorpora() throws NotFoundException, GenericException, AlreadyExistsException,
+    IsStillUpdatingException, AuthorizationDeniedException {
     TransferredResourcesScanner f = RodaCoreFactory.getTransferredResourcesScanner();
 
-    List<TransferredResource> resources = new ArrayList<TransferredResource>();
+    List<TransferredResource> resources = new ArrayList<>();
 
     Path corpora = corporaPath.resolve(RodaConstants.STORAGE_CONTAINER_AIP).resolve("AIP_1")
       .resolve(RodaConstants.STORAGE_DIRECTORY_REPRESENTATIONS).resolve(CorporaConstants.REPRESENTATION_CONVERTER_ID_2)
@@ -122,8 +116,7 @@ public class ExamplePluginTest {
   }
 
   public AIP ingestCorpora() throws RequestNotValidException, NotFoundException, GenericException,
-    AlreadyExistsException, AuthorizationDeniedException, InvalidParameterException, InterruptedException, IOException,
-    FileAlreadyExistsException, SolrServerException, IsStillUpdatingException {
+    AlreadyExistsException, AuthorizationDeniedException, IsStillUpdatingException {
     String parentId = null;
     String aipType = RodaConstants.AIP_TYPE_MIXED;
     AIP root = model.createAIP(parentId, aipType, new Permissions(), RodaConstants.ADMIN);
@@ -131,7 +124,7 @@ public class ExamplePluginTest {
     Map<String, String> parameters = new HashMap<>();
     parameters.put(RodaConstants.PLUGIN_PARAMS_PARENT_ID, root.getId());
 
-    List<TransferredResource> transferredResources = new ArrayList<TransferredResource>();
+    List<TransferredResource> transferredResources;
     transferredResources = createCorpora();
 
     AssertJUnit.assertEquals(1, transferredResources.size());
@@ -155,8 +148,7 @@ public class ExamplePluginTest {
   }
 
   @Test
-  public void testExamplePlugin() throws RODAException, FileAlreadyExistsException, InterruptedException,
-    IOException, NoSuchAlgorithmException, SolrServerException, IsStillUpdatingException {
+  public void testExamplePlugin() throws RODAException {
     AIP aip = ingestCorpora();
 
     Map<String, String> parameters = new HashMap<>();
