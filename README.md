@@ -11,6 +11,11 @@ It includes:
 * Quick run instructions
 * README automatic generation instructions
 
+
+> In order to make it possible to see your creations, you must assure that you have these pre-requisites.
+
+- [Roda Standalone](https://github.com/keeps/roda/tree/master/deploys) (Use Standalone Development, don't open WUI in spring boot)
+
 ## How to build and run
 
 To build execute `./build.sh`, this will run with the latest RODA version.
@@ -20,7 +25,7 @@ The build script will compile the plugin and create a docker image with the base
 To run execute (roda-plugin-template should be replaced by the project folder name):
 
 ```shell
-docker run -p 8080:8080 roda-plugin-template:latest
+docker run --network="host" -p 8080:8080 roda-plugin-template:latest
 ```
 
 Then open in your favorite browser [http://localhost:8080](http://localhost:8080).
