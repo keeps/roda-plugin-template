@@ -69,7 +69,7 @@ public class ExamplePluginTest {
     basePath = TestsHelper.createBaseTempDir(this.getClass(), true);
 
     boolean deploySolr = true;
-    boolean deployLdap = false;
+    boolean deployLdap = true;
     boolean deployFolderMonitor = true;
     boolean deployOrchestrator = true;
     boolean deployPluginManager = true;
