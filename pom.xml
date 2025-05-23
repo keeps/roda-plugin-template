@@ -17,13 +17,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.date>${maven.build.timestamp}</build.date>
         <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
-        <java_version>17</java_version>
+        <java_version>21</java_version>
         <RODA_PLUGIN>org.roda.core.plugins.external.ExamplePlugin</RODA_PLUGIN>
     </properties>
     <parent>
         <groupId>org.roda-project</groupId>
         <artifactId>roda</artifactId>
-        <version>5.3.0</version>
+        <version>5.7.5</version>
     </parent>
     <build>
         <plugins>

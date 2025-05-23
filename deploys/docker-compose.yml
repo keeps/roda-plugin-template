@@ -1,0 +1,74 @@
+services:
+  zoo:
+    image: docker.io/zookeeper:3.9.3-jre-17
+    restart: unless-stopped
+    environment:
+      - ZOO_4LW_COMMANDS_WHITELIST=mntr,conf,ruok
+    volumes:
+      - zookeeper_data:/data
+      - zookeeper_datalog:/datalog
+  solr:
+    image: docker.io/solr:9.8.1
+    restart: unless-stopped
+    ports:
+      - "8983:8983"
+    environment:
+      SOLR_HEAP: 2g
+      ZK_HOST: zoo:2181
+    command: -c
+    volumes:
+      - solr_data:/var/solr
+
+  clamd:
+    image: docker.io/clamav/clamav:1.4.2
+    restart: unless-stopped
+    volumes:
+      - clam_data:/var/lib/clamav
+      - roda_data:/roda/data/
+  siegfried:
+    image: ghcr.io/keeps/siegfried:v1.11.0
+    restart: unless-stopped
+    environment:
+      SIEGFRIED_HOST: 0.0.0.0
+      SIEGFRIED_PORT: 5138
+    volumes:
+      - siegfried_data:/root/siegfried/
+      - roda_data:/roda/data/
+  swagger:
+    image: docker.io/swaggerapi/swagger-ui:v5.13.0
+    restart: on-failure
+    ports:
+      - "8081:8080"
+    environment:
+      - URL=http://localhost:8080/api/openapi.json
+      - DOC_EXPANSION=none
+      - VALIDATOR_URL=none
+  roda:
+    image: docker.io/library/roda-plugin-template:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - solr
+      - clamd
+      - siegfried
+    volumes:
+      - roda_data:/roda/data/
+      - ./roda-core.properties:/roda/config/roda-core.properties:ro
+    environment:
+      # Solr Cloud configuration
+      - RODA_CORE_SOLR_TYPE=CLOUD
+      - RODA_CORE_SOLR_CLOUD_URLS=zoo:2181
+      - SOLR_NUM_SHARDS=4
+      - SOLR_REPLICATION_FACTOR=1
+      # Base plugin services configuration
+      - SIEGFRIED_SERVER_URL=http://siegfried:5138
+      - CLAMD_TCPADDR=clamd
+      - CLAMD_TCPSOCKET=3310
+volumes:
+  zookeeper_data:
+  zookeeper_datalog:
+  solr_data:
+  clam_data:
+  siegfried_data:
+  roda_data:

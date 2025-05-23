@@ -12,4 +12,4 @@ PLUGIN=$(basename $(dirname $(readlink -m $0)))
 echo "Building plugin ${PLUGIN}"
 
 mvn clean package -Dmaven.test.skip -Denforcer.skip
-docker build $RODA_VERSION_ARG --build-arg PLUGIN=${PLUGIN} -t ${PLUGIN}  .
+docker build $RODA_VERSION_ARG --build-arg PLUGIN=${PLUGIN} -t ${PLUGIN}:latest .
