@@ -86,15 +86,14 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
   }
 
   @Override
-  public Report execute(IndexService index, ModelService model, StorageService storage,
-    List<LiteOptionalWithCause> liteList) throws PluginException {
+  public Report execute(IndexService index, ModelService model, List<LiteOptionalWithCause> liteList) throws PluginException {
     return PluginHelper.processObjects(this,
-      (RODAObjectProcessingLogic<AIP>) (index1, model1, storage1, report, cachedJob, jobPluginInfo, plugin,
-        object) -> processAIP(model1, index1, storage1, report, jobPluginInfo, cachedJob, object),
-      index, model, storage, liteList);
+      (RODAObjectProcessingLogic<AIP>) (index1, model1, report, cachedJob, jobPluginInfo, plugin,
+        object) -> processAIP(model1, report, jobPluginInfo, cachedJob, object),
+      index, model, liteList);
   }
 
-  protected void processAIP(ModelService model, IndexService index, StorageService storage, Report report,
+  protected void processAIP(ModelService model, Report report,
     JobPluginInfo jobPluginInfo, Job job, AIP aip) {
     Report reportItem = PluginHelper.initPluginReportItem(this, aip.getId(), AIP.class, AIPState.INGEST_PROCESSING);
     PluginHelper.updatePartialJobReport(this, model, reportItem, false, job);
@@ -102,7 +101,7 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
 
     try {
       for (Representation representation : aip.getRepresentations()) {
-        executeOnRepresentation(model, index, storage, representation);
+        executeOnRepresentation(model, representation);
       }
 
       jobPluginInfo.incrementObjectsProcessed(reportState);
@@ -121,8 +120,7 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
     }
   }
 
-  private void executeOnRepresentation(ModelService model, IndexService index, StorageService storage,
-    Representation representation)
+  private void executeOnRepresentation(ModelService model, Representation representation)
     throws NotFoundException, GenericException, RequestNotValidException, AuthorizationDeniedException {
     LOGGER.debug("Processing representation {}", representation);
     boolean recursive = true;
@@ -179,13 +177,13 @@ public class ExamplePlugin extends AbstractPlugin<AIP> {
   }
 
   @Override
-  public Report beforeAllExecute(IndexService index, ModelService model, StorageService storage) {
+  public Report beforeAllExecute(IndexService index, ModelService model) {
     // do nothing
     return null;
   }
 
   @Override
-  public Report afterAllExecute(IndexService index, ModelService model, StorageService storage) {
+  public Report afterAllExecute(IndexService index, ModelService model) {
     // do nothing
     return null;
   }

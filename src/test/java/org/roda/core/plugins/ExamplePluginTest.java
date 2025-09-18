@@ -119,7 +119,7 @@ public class ExamplePluginTest {
     AlreadyExistsException, AuthorizationDeniedException, IsStillUpdatingException {
     String parentId = null;
     String aipType = RodaConstants.AIP_TYPE_MIXED;
-    AIP root = model.createAIP(parentId, aipType, new Permissions(), RodaConstants.ADMIN);
+    AIP root = model.createAIP(parentId, aipType, new Permissions(), RodaConstants.ADMIN, null);
 
     Map<String, String> parameters = new HashMap<>();
     parameters.put(RodaConstants.PLUGIN_PARAMS_PARENT_ID, root.getId());
